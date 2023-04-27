@@ -6,19 +6,26 @@ import config from "../../config/config.js";
 
 class AuthController {
     static async signup(req, res) {
-        const { username, password } = req.body;
+        const { username, password, confirmPassword } = req.body;
+        if (!username || !password || !confirmPassword) {
+            return res.status(400).json({success: false , message: 'Username and password required' });
+        }
+        if (password !== confirmPassword) {
+            return res.status(400).json({success: false , message: 'Passwords do not match' });
+        }
         try {
             const user = await User.findOne({ username });
             if (user) {
-                return res.status(400).json({ error: 'Username already exists' });
+                return res.status(400).json({success: false , message: 'Username already exists' });
             }
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(password, salt);
             const newUser = new User({ username, password: hash });
             await newUser.save();
-            return res.status(201).json({ message: 'User created successfully' });
+            const accessToken = jwt.sign({ id: newUser._id }, config.jwt_key, { expiresIn: '1h' });
+            return res.status(201).json({success: true,message: 'user create successfully', accessToken});
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({success: false , message: error.message });
         }
     }
 
@@ -30,21 +37,29 @@ class AuthController {
         try {
             const user = await User.findOne({ username });
             if (!user) {
-                return res.status(404).json({ error: 'User not found' });
+                return res.status(404).json({success: false ,message: 'User not found' });
             }
             const valid = await bcrypt.compare(password, user.password);
             if (!valid) {
-                return res.status(401).json({ error: 'Incorrect password' });
+                return res.status(401).json({success: false , message: 'Incorrect password' });
             }
-            const token = jwt.sign({ id: user._id }, config.jwt_key, { expiresIn: '1h' });
-            return res.status(200).json({ token });
+            const accessToken = jwt.sign({ id: user._id }, config.jwt_key, { expiresIn: '1h' });
+            return res.status(200).json({success: true, accessToken});
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({success: false , message: error.message });
         }
     }
 
-    static async me(req, res) {
-        return res.status(200).json({ user: req.user });
+    static async loadUser(req, res) {
+        try {
+            const user = await User.findById(req.user._id).select('-password');
+            if(!user) return res.status(404).json({success: false, message: 'User not found' });
+
+            return res.status(200).json({success: true, user });
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message });
+        }
+
     }
 
     static async getAll(req, res) {
@@ -52,7 +67,7 @@ class AuthController {
             const users = await User.find();
             return res.status(200).json({ users });
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
 

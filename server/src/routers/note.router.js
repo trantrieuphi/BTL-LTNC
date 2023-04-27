@@ -12,9 +12,9 @@ class NoteRouter {
         this.router.use(AuthMiddleware.authenticate);
         this.router.post('/',  NoteController.createNote);
         this.router.get('/', NoteController.getNotes);
-        this.router.get('/:id', NoteController.getNoteById);
-        this.router.put('/:id', NoteController.updateNoteById);
-        this.router.delete('/:id', NoteController.deleteNoteById);
+        this.router.get('/:noteId', NoteController.getNoteById);
+        this.router.put('/:noteId', NoteController.updateNoteById);
+        this.router.delete('/:noteId', NoteController.deleteNoteById);
     }
 }
 

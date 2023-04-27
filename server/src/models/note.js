@@ -14,6 +14,22 @@ const noteSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  url: {
+    type: String,
+  },
+  type: {
+    type: String,
+    enum: ['Learn', 'Work', 'Life'],
+    default: 'Life',
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  updatedAt: {
+    type: Date,
+  }
+
 });
 
 const Note = mongoose.model('Note', noteSchema);
