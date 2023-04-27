@@ -32,6 +32,48 @@ const noteSchema = new mongoose.Schema({
 
 });
 
-const Note = mongoose.model('Note', noteSchema);
+
+class NoteModel {
+  constructor() {
+    this.note = mongoose.model('Note', noteSchema);
+  }
+
+  async create(data) {
+    const note = await this.note.create(data);
+    return note;
+  }
+
+  async findNoteById(id) {
+    const note = await this.note.findById(id);
+    return note;
+  }
+
+  async updateNoteById(id, data) {
+    const note = await this.note.findByIdAndUpdate(id, data, { new: true });
+    return note;
+  }
+
+  async deleteNoteById(id) {
+    const note = await this.note.findByIdAndDelete(id);
+    return note;
+  }
+
+  async findAllNotes() {
+    const notes = await this.note.find();
+    return notes;
+  }
+
+  async findNotesByUserId(id) {
+    const notes = await this.note.find({ user: id });
+    return notes;
+  }
+
+  async deleteAllNotes() {
+    const notes = await this.note.deleteMany();
+    return notes;
+  }
+
+}
+const Note = new NoteModel();
 
 export default Note;

@@ -23,6 +23,43 @@ const userSchema = new mongoose.Schema({
   
 });
 
-const User = mongoose.model('User', userSchema);
+class UserModel {
+  constructor() {
+    this.user = mongoose.model('User', userSchema);
+  }
 
-export default User;
+  async create(username, password) {
+    const user = await this.user.create({ username, password });
+    return user;
+  }
+
+  async findUser(username) {
+    const user = await this.user.findOne({ username });
+    return user;
+  }
+
+  async findUserById(id) {
+    const user = await this.user.findById(id);
+    return user;
+  }
+
+  async updateUser(id, data) {
+    const user = await this.user.findByIdAndUpdate(id, data, { new: true });
+    return user;
+  }
+
+  async deleteUser(id) {
+    const user = await this.user.findByIdAndDelete(id);
+    return user;
+  }
+
+  async findAllUsers() {
+    const users = await this.user.find();
+    return users;
+  }
+
+}
+
+const User = new UserModel();
+
+export default User ;
