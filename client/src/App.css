@@ -39,26 +39,26 @@
 }
 
 /* Post button */
-.post-button {
+.note-button {
 	padding-top: 0;
 	background: transparent;
 	border: none;
 }
 
-.post-button:hover {
+.note-button:hover {
 	background: transparent;
 }
 
-a.post-button.btn:focus,
-a.post-button.btn:active {
+a.note-button.btn:focus,
+a.note-button.btn:active {
 	outline: none;
 	background: transparent;
 	border: none;
 	box-shadow: none;
 }
 
-button.post-button.btn:focus,
-button.post-button.btn:active {
+button.note-button.btn:focus,
+button.note-button.btn:active {
 	outline: none;
 	background: transparent;
 	border: none;
@@ -86,7 +86,7 @@ button.post-button.btn:active {
 	box-shadow: none;
 }
 
-/* Add new post tooltip */
+/* Add new note tooltip */
 .tooltip {
 	background: transparent;
 }
@@ -107,6 +107,6 @@ button.post-button.btn:active {
 }
 
 /* Post title */
-.post-title {
+.note-title {
 	margin-bottom: 0.5rem;
 }

@@ -33,22 +33,6 @@ class AuthMiddleware {
         }
         next();
     }
-
-    static async checkPassword(req, res, next) {
-        const { password } = req.body;
-        if (!password) {
-            return res.status(400).json({ error: 'Password required' });
-        }
-        try {
-            const valid = await bcrypt.compare(password, req.user.password);
-            if (!valid) {
-                return res.status(401).json({ error: 'Incorrect password' });
-            }
-            next();
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
-        }
-    }
 }
 
 export default AuthMiddleware;

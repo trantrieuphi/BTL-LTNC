@@ -50,6 +50,7 @@ class NoteModel {
 
   async updateNoteById(id, data) {
     const note = await this.note.findByIdAndUpdate(id, data, { new: true });
+    note.save();
     return note;
   }
 

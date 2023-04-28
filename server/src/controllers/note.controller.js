@@ -38,9 +38,8 @@ class NoteController {
     }
 
     static async updateNoteById(req, res) {
-        const data = req.body;
         try {
-            const note = await Note.updateNoteById(req.params.noteId, data );
+            const note = await Note.updateNoteById(req.params.noteId, req.body );
             if (note) {
                 return res.status(200).json({ success: true, note });
             }

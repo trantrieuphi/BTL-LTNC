@@ -67,7 +67,7 @@ const AddNoteModal = () => {
 						<Form.Control
 							as='textarea'
 							rows={3}
-							placeholder='Description'
+							placeholder='Content'
 							name='content'
 							value={content}
 							onChange={onChangeNewNoteForm}
@@ -76,7 +76,7 @@ const AddNoteModal = () => {
 					<Form.Group>
 						<Form.Control
 							type='text'
-							placeholder='Youtube Tutorial URL'
+							placeholder='Your URL you want to note'
 							name='url'
 							value={url}
 							onChange={onChangeNewNoteForm}
